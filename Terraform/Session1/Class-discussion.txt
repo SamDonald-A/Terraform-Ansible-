@@ -1,0 +1,115 @@
+---------------------------
+Terraform Training Program
+---------------------------
+
+-------------
+Session 1:
+-------------
+
+
+How do you create resources in AWS?
+
+GUI - ClickOps
+CLI - Infrastructure Automation Scripts
+Programming (Bot3) - Python
+IaC (Infrastructure as Code) - Terraform, CloudFormation (AWS), Biceps / ARM Templates (Azure), Pulumi (IAC via programming languages)
+
+
+Best practices in terms of provisioning any resource in AWS (Any other cloud)
+
+-> 1st All the provisioning should be done via "GUI - ClickOps"
+    - This enables us to learn the services in the best possible way
+    - This enables us to create the best possible workflow for your req
+-> 2nd, use automation scripts to operationalize it from day 2 
+
+
+Scenario:
+
+I have to deploy an ecommerce site in AWS
+
+-> IAM Policies and Roles
+-> VPC - route table - subnets (private and public)
+-> Multiple EC2s with EBS
+-> Auto-scaling groups
+-> S3
+-> Load Balancer
+-> AWS RDS (Database)
+-> CloudWatch (Monitoring)
+
+I have to deploy this in 4 environments: dev, qa, uat and prod
+
+for all these 4 envs: I can have 4 different accounts
+
+Environment Provisioning Strategy without Infrastructure as code:
+-----------------------------------------------------------------
+
+You must deploy this e-commerce platform across multiple environments:
+
+1.) First the deployment is fully manual to learn all required steps in the "Dev" environments
+- Capture every configuration step and screenshot -> build a Runbook / Playbook.
+- Identify which tasks can later be automated using scripts.
+
+2.) Then the deployment is promoted to the QA Environment
+- Again manually using the same runbook as created above
+
+and then to further environments
+
+These steps are entirely manual and requires careful execution and may have inconsistencies.
+
+Environment Provisioning Strategy with simple Automation:
+---------------------------------------------------------
+
+Some chunks of small repeatable tasks are identified and then automated via writing shell or batch / powershell scripts
+
+
+No scripts by default is idempotent in nature: 
+
+- I wrote a shell script to create 5 EC2 servers
+- I executed that script and 5 EC2s are created afterwards
+- If I run the script again, it may create 5 new / it will fail as the instances are already existing
+
+Issues With Only Using Scripts (Shell/Batch/PowerShell):
+
+- No State Awareness: Scripts don't know what already exists which leads to duplicate resources, failures, and drift.
+
+- Not Idempotent: Running the same script twice can break things.
+
+- No Environment Consistency: Dev, QA, Staging, Prod become slightly different over time.
+
+- No Plan or Preview: Scripts run blindly as there is no option of dry-run.
+
+- Poor Dependency Handling: Scripts require manual ordering, no implicit dependency management.
+
+- Hard to Scale & Maintain: As infra grows, scripts become large, complex, error-prone.
+
+Introducing Infrastructure as Code (IaC):
+-----------------------------------------
+
+IaC allows you to define your infrastructure in a declarative format, enabling:
+
+- Repeatability
+- Version-controlled infrastructure
+- Automated deployments
+- Zero manual drift (with a condition that no user is allowed to change / update anything in prod env via the AWS console)
+- Multi-environment consistency
+
+Popular IAC tools:
+
+AWS -> CloudFormation
+Azure -> ARM template, Biceps
+OpenSource -> Terraform, Pulumi (Requires extensive programming capability)
+
+Why Terraform?
+--------------
+
+- It is vendor-agnostic (works with AWS, Azure, GCP, VMware, Kubernetes, etc.).
+- Uses HCL (HashiCorp Configuration Language) - simple, declarative, human-readable.
+- Large open-source community contributing modules and best practices.
+- Easy to learn because you describe the infrastructure instead of writing complex logic.
+
+Terraform is currently the industry’s most widely adopted IaC tool for provisioning cloud infrastructure.
+
+terraform --------------------> Cloud provider & provision resources here
+terraform in itself can not contain all the code for connecting to each cloud provider
+terraform has its own binary ---plugins to connect to each provider--> AWS
+terraform has its own binary ---plugins to connect to each provider--> Azure
