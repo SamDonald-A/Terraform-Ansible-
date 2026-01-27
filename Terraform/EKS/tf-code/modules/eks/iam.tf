@@ -130,7 +130,7 @@ data "aws_iam_policy_document" "ebs_csi_assume_role_policy" {
 
 resource "aws_iam_role" "ebs_csi" {
   assume_role_policy = data.aws_iam_policy_document.ebs_csi_assume_role_policy.json
-  name               = "AmazonEKS_EBS_CSI_DriverRole"
+  name               = "AmazonEKS_EBS_CSI_DriverRole-1"
 }
 
 resource "aws_iam_role_policy_attachment" "ebs_csi" {
